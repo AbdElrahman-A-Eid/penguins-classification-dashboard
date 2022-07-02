@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
-import dash_daq as daq
+# import dash_daq as daq
 import pandas as pd
 import plotly.express as px
 
@@ -13,8 +13,10 @@ app = Dash(
     ]
 )
 
-df = pd.read_csv('/home/yinshe/Documents/PythonZone/DataViz/ExplanationProject/penguins_size.csv')
-scatter_fig = px.scatter(df, x='culmen_length_mm', y='flipper_length_mm', color='species', template='simple_white', height=750)
+df = pd.read_csv(
+    'F:\\clustering-classification-dashboard\\penguins_size.csv')
+scatter_fig = px.scatter(df, x='culmen_length_mm', y='flipper_length_mm',
+                         color='species', template='simple_white', height=750)
 scatter_fig.update_layout({
     'plot_bgcolor': 'rgba(0, 0, 0, 0)',
     'paper_bgcolor': 'rgba(0, 0, 0, 0)',
@@ -69,23 +71,21 @@ app.layout = html.Div([
                     ], className='justify-content-evenly'),
                 ], width=4),
             ], className='justify-content-evenly overlay'), width=12)
-        ], style={'color': 'white'}),
+            ], style={'color': 'white'}),
     dbc.Row(
         [
             dbc.Col(
-                dcc.Graph(figure=scatter_fig)
-            , width=6),
-            dbc.Col(
+                dcc.Graph(figure=scatter_fig), width=6),
+            dbc.Col([
                 dbc.Row([
 
                 ]),
                 dbc.Row([
 
                 ]),
-            )
-        ]
-    , className='overlay figs')
-    
+            ])
+        ], className='overlay figs')
+
 ], className='container-fluid')
 
 if __name__ == "__main__":
