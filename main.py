@@ -75,14 +75,19 @@ app.layout = html.Div([
             dbc.Col(
                 dcc.Graph(figure=scatter_fig)
             , width=6),
-            dbc.Col(
+            dbc.Col([
                 dbc.Row([
+                    dbc.Col([
 
+                    ], width=6),
+                    dbc.Col([
+
+                    ], width=6)
                 ]),
                 dbc.Row([
 
                 ]),
-            )
+            ], width=6)
         ]
     , className='overlay figs')
     
