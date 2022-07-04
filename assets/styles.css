@@ -27,15 +27,18 @@ body {
 }
 
 .Adelie {
-    color: orangered;
+    /* color: orangered; */
+    color: #2077B4;
 }
 
 .Chinstrap {
-    color: purple;
+    /* color: purple; */
+    color: #FB8139;
 }
 
 .Gentoo {
-    color: darkgoldenrod;
+    /* color: darkgoldenrod; */
+    color: #49A02D;
 }
 
 h5 {
@@ -60,5 +63,5 @@ h5 {
 
 .figs {
     /* margin-top: 0.5vw; */
-    height: calc(100% - 150px);
+    /* height: 800px; */
 }

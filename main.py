@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 # import dash_daq as daq
 import pandas as pd
 import plotly.express as px
+from pyrsistent import v
 
 app = Dash(
     external_stylesheets=[
@@ -14,14 +15,22 @@ app = Dash(
 )
 
 df = pd.read_csv(
-    'F:\\clustering-classification-dashboard\\penguins_size.csv')
-scatter_fig = px.scatter(df, x='culmen_length_mm', y='flipper_length_mm',
-                         color='species', template='simple_white', height=750)
-scatter_fig.update_layout({
-    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-    'legend_bgcolor': 'rgba(0, 0, 0, 0)',
-})
+    '/home/yinshe/Documents/PythonZone/DataViz/ExplanationProject/data/penguins_cleaned.csv')
+scatter_fig = px.scatter(df, x='culmen_length_mm', y='flipper_length_mm', color='species', template='simple_white', size=[2 for _ in range(len(df))], size_max=8, height=778)
+hist_fig = px.histogram(df, x="body_mass_g", template='simple_white', color='species', barmode="overlay", nbins=25, height=400)
+count_fig = px.histogram(df, x=['species', 'island'], template='simple_white', color='species', barmode='group', height=400)
+violin_fig = px.violin(df, y="culmen_length_mm", x="species", color='species', box=True, template='simple_white', facet_col='sex', height=400)
+no_color = 'rgba(0, 0, 0, 0)'
+for fig in [scatter_fig, count_fig, hist_fig, violin_fig]:
+    legend_bool = fig == scatter_fig
+    margin_dict = dict(l=10, r=10, t=15, b=0) if fig==scatter_fig else dict(l=10, r=10, t=20, b=70)
+    fig.update_layout({
+        'plot_bgcolor': no_color,
+        'paper_bgcolor': no_color,
+        'legend_bgcolor': no_color,
+        'showlegend': legend_bool,
+        'margin': margin_dict
+    })
 app.layout = html.Div([
     dbc.Row([
             dbc.Col(dbc.Row([
@@ -80,14 +89,14 @@ app.layout = html.Div([
             dbc.Col([
                 dbc.Row([
                     dbc.Col([
-
-                    ], width=6),
+                        dcc.Graph(figure=hist_fig)
+                    ], width=7),
                     dbc.Col([
-
-                    ], width=6)
+                        dcc.Graph(figure=count_fig)
+                    ], width=5)
                 ]),
                 dbc.Row([
-
+                    dcc.Graph(figure=violin_fig)
                 ]),
             ], width=6)
         ]
