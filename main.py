@@ -75,17 +75,24 @@ app.layout = html.Div([
     dbc.Row(
         [
             dbc.Col(
-                dcc.Graph(figure=scatter_fig), width=6),
+                dcc.Graph(figure=scatter_fig)
+            , width=6),
             dbc.Col([
                 dbc.Row([
+                    dbc.Col([
 
+                    ], width=6),
+                    dbc.Col([
+
+                    ], width=6)
                 ]),
                 dbc.Row([
 
                 ]),
-            ])
-        ], className='overlay figs')
-
+            ], width=6)
+        ]
+    , className='overlay figs')
+    
 ], className='container-fluid')
 
 if __name__ == "__main__":
