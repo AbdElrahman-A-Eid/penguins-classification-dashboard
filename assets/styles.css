@@ -12,12 +12,12 @@ body {
 
 @font-face {
     font-family: 'Mina Regular';
-    src: url("fonts/Mina/Mina-Regular.ttf") format("truetype")
+    src: url("fonts\\Mina\\Mina-Regular.ttf") format("truetype")
 }
 
 @font-face {
     font-family: 'Mina Bold';
-    src: url("fonts/Mina/Mina-Bold.ttf") format("truetype")
+    src: url("fonts\\Mina\\Mina-Bold.ttf") format("truetype")
 }
 
 .bans {
