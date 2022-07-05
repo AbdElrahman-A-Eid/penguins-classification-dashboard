@@ -1,18 +1,54 @@
-# English Premier League Analytics Dashboard
+# Penguins Classification and Vizualization Dashboard
 
-Dashboard of English Premier League Analytics for seasons spanning 2002-2022 Implemented using Plotly Dash. A Project for Data Visualization Course during ITI AI-Pro.
+Dashboard Featuring Data Vizualization and Classifier Model Predictions. Implemented using Plotly Dash. A Project for Data Visualization Course during ITI AI-Pro.
 
-## Datasets
+## Dataset
 
-- English Premier League Match Events and Results, [Kaggle](https://www.kaggle.com/datasets/josephvm/english-premier-league-game-events-and-results)
+- Palmer Archipelago (Antarctica) Penguins, [Kaggle](https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data)
 
 ## Process Workflow
 
 - Data Exploration
-- Feature Engineering
+- Data Preparation
+- Model Selection
 - Dashboard Layout Desgin
 - Design Interactivity
-- To be Added...
+- Dashboard Implementation
+- Heroku Deployment
+
+## Project Structure
+```
+DashboardProject
+├── assets
+│   ├── data
+│   │   ├── penguins_cleaned.csv
+│   │   ├── penguins_size.csv
+│   │   ├── train_minmax.csv
+│   │   ├── train_none.csv
+│   │   ├── train_robust.csv
+│   │   ├── train_std.csv
+│   │   ├── valid_minmax.csv
+│   │   ├── valid_none.csv
+│   │   ├── valid_robust.csv
+│   │   └── valid_std.csv
+│   ├── fonts
+│   │   ├── Mina
+│   │   │   ├── Mina-Bold.ttf
+│   │   │   └── Mina-Regular.ttf
+│   │   └── Quattrocento_Sans
+│   │       ├── QuattrocentoSans-BoldItalic.ttf
+│   │       ├── QuattrocentoSans-Bold.ttf
+│   │       ├── QuattrocentoSans-Italic.ttf
+│   │       └── QuattrocentoSans-Regular.ttf
+│   ├── imgs
+│   │   └── penguins.png
+│   └── styles.css
+├── Data Engineering.ipynb
+├── main.py
+├── Models.ipynb
+├── Plots Exploration.ipynb
+└── README.md
+```
 
 ## Team Members
 
