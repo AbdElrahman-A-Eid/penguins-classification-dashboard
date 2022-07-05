@@ -1,0 +1,33 @@
+.
+├── assets
+│   ├── data
+│   │   ├── penguins_cleaned.csv
+│   │   ├── penguins_size.csv
+│   │   ├── train_minmax.csv
+│   │   ├── train_none.csv
+│   │   ├── train_robust.csv
+│   │   ├── train_std.csv
+│   │   ├── valid_minmax.csv
+│   │   ├── valid_none.csv
+│   │   ├── valid_robust.csv
+│   │   └── valid_std.csv
+│   ├── fonts
+│   │   ├── Mina
+│   │   │   ├── Mina-Bold.ttf
+│   │   │   └── Mina-Regular.ttf
+│   │   └── Quattrocento_Sans
+│   │       ├── QuattrocentoSans-BoldItalic.ttf
+│   │       ├── QuattrocentoSans-Bold.ttf
+│   │       ├── QuattrocentoSans-Italic.ttf
+│   │       └── QuattrocentoSans-Regular.ttf
+│   ├── imgs
+│   │   └── penguins.png
+│   └── styles.css
+├── Data Engineering.ipynb
+├── main.py
+├── Models.ipynb
+├── Plots Exploration.ipynb
+├── project_structure.txt
+└── README.md
+
+6 directories, 24 files

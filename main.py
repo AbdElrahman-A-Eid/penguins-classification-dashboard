@@ -51,6 +51,7 @@ app = Dash(
     ]
 )
 
+server = app.server
 
 ##### ##### ##### ##### ##### ##### Helper Functions  ##### ##### ##### ##### ##### #####
 
