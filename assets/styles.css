@@ -54,7 +54,7 @@ h5 {
 	width:60px;
 	height:60px;
 	bottom:40px;
-	left:40px;
+	right:40px;
     padding-top: 15px;
 	background-color: rgba(54, 35, 196, 0.1);
 	color:rgba(246, 245, 251, 0.2);
@@ -90,11 +90,20 @@ h6 {
     border-radius: 10px;
 }
 
+#loading-figs {
+    position: fixed;
+    bottom: calc(50% - 80px);
+    right: calc(50% - 30px);
+    color:#FB8139;
+}
+
 footer { /* Plotly Footer */
     display: none;
 }
 
 #footer {
+    position: fixed;
+    bottom: 0;
     height: 24px;
     text-align: center;
     background-color: #0C3E66;
