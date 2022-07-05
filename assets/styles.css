@@ -1,23 +1,17 @@
 body {
-    /* background-color: #0C3E66; */
     background: rgb(61,127,171);
     background: radial-gradient(circle, rgba(61,127,171,1) 0%, rgba(61,176,227,0.9948354341736695) 55%, rgba(57,121,179,1) 100%);
-    /* background-image: url('https://resources.premierleague.com/photos/2020/12/02/ca403c92-db70-48ac-91e2-0f2f18277133/PageHeader_RainbowLaces.png?width=1920&height=1080'); */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     height: 100%;
 }
 
 @font-face {
     font-family: 'Mina Regular';
-    src: url("fonts\\Mina\\Mina-Regular.ttf") format("truetype")
+    src: url("fonts/Mina/Mina-Regular.ttf") format("truetype")
 }
 
 @font-face {
     font-family: 'Mina Bold';
-    src: url("fonts\\Mina\\Mina-Bold.ttf") format("truetype")
+    src: url("fonts/Mina/Mina-Bold.ttf") format("truetype")
 }
 
 .bans {
@@ -27,15 +21,15 @@ body {
 }
 
 .Adelie {
-    color: orangered;
+    color: #2077B4;
 }
 
 .Chinstrap {
-    color: purple;
+    color: #FB8139;
 }
 
 .Gentoo {
-    color: darkgoldenrod;
+    color: #49A02D;
 }
 
 h5 {
@@ -52,13 +46,37 @@ h5 {
     margin-top: 0.5vw;
     background-color: rgba(240, 255, 255, 0.4);
     border-radius: 25px;
+    box-shadow: 2px 2.8px rgb(83, 83, 83);
 }
 
-#overlay_col {
-    padding: 0 1.8vw;
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	left:40px;
+    padding-top: 15px;
+	background-color: rgba(54, 35, 196, 0.1);
+	color:rgba(246, 245, 251, 0.2);
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px rgb(83, 83, 83);
 }
 
-.figs {
-    /* margin-top: 0.5vw; */
-    height: calc(100% - 150px);
+.btn-floating:focus {
+    outline: none;
+    box-shadow: 2px 2px 3px rgb(83, 83, 83);
+}
+
+.form-label {
+    margin-top: 15px;
+}
+
+h6 {
+    font-weight: bold;
+}
+
+.offcanvas-title {
+    text-shadow: 0px 1.2px rgb(83, 83, 83);
+    margin-bottom: -10px;
 }
