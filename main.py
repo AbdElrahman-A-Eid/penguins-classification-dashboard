@@ -430,9 +430,6 @@ def update_model(classifier, p1, p2, norm, imb, n):
         '.') + '%' if r_ > 0 else '00.0%' for r_ in metrics[1]*100]
     f_list = [f'{f_:.1f}'.rstrip('0').rstrip(
         '.') + '%' if f_ > 0 else '00.0%' for f_ in metrics[2]*100]
-    print(p_list)
-    print(r_list)
-    print(f_list)
     return p_list[0], p_list[1], p_list[2], r_list[0], r_list[1], r_list[2], f_list[0], f_list[1], f_list[2]
 
 
