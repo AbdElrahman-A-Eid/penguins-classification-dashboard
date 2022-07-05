@@ -2,29 +2,42 @@
 
 ##### ##### ##### ##### ##### ##### Imports  ##### ##### ##### ##### ##### #####
 
-from datetime import datetime
 from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
-import pandas as pd
-import numpy as np
 import plotly.express as px
+
+import pandas as pd
+from datetime import datetime
 import re
+
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model  import LogisticRegression
+from sklearn.metrics import precision_recall_fscore_support
 
 
 ##### ##### ##### ##### ##### ##### Variables  ##### ##### ##### ##### ##### #####
 
-df = pd.read_csv('/'.join(re.split('[\\/]', __file__)[:-1]) + '/assets/data/penguins_cleaned.csv')
+DATA_PATH = '/'.join(re.split('[\\|/]', __file__)[:-1]) + '/assets/data/'
+
+df = pd.read_csv(DATA_PATH + 'penguins_cleaned.csv')
 
 columns_dict = {'species':'Species', 'culmen_length_mm':'Culmen Length (mm)', 'culmen_depth_mm':'Culmen Depth (mm)',
  'flipper_length_mm':'Flipper Length (mm)', 'body_mass_g':'Body Mass (g)', 'sex':'Sex', 'island':'Island'}
 column_options = {k: v for k, v in columns_dict.items() if k not in ['species', 'sex', 'island']}
 cat_cols = {'sex':'Sex', 'island':'Island'}
+species = ['Adelie', 'Chinstrap', 'Gentoo']
 
 c_values = [0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 20]
 iter_values = [1, 5, 10, 15, 20, 50]
 k_values = [1, 2, 3, 4, 5, 6, 7, 8]
 weight_values = ['uniform', 'distance']
 
+get_file_names = lambda x: ('train_' + x + '.csv', 'valid_' + x + '.csv')
+datasets = {v: get_file_names(v) for v in ['none', 'minmax', 'std', 'robust']}
+
+labels = None
 
 ##### ##### ##### ##### ##### ##### App Instantiation  ##### ##### ##### ##### ##### #####
 
@@ -53,30 +66,63 @@ def update_fig_layout(fig_list):
         })
     
 
-def generate_figures(type='2', scatter_axes=list(column_options.keys())[:2], hist_feat=list(column_options.keys())[0], count_feat=list(cat_cols.keys())[0], violin_feat=list(column_options.keys())[0]):
+def generate_figures(type='2', scatter_axes=list(column_options.keys())[:2], hist_feat=list(column_options.keys())[0], count_feat=list(cat_cols.keys())[0], violin_feat=list(column_options.keys())[0], scatter_only=False, labels=None):
     if int(type) == 2:
-        scatter = px.scatter(df, x=scatter_axes[0], y=scatter_axes[1], color='species', template='simple_white', size=[2 for _ in range(len(df))], size_max=8, height=778)
+        scatter = px.scatter(df, x=scatter_axes[0], y=scatter_axes[1], color='species' if labels is None else [species[i] for i in labels], template='simple_white', size=[2 for _ in range(len(df))], size_max=8, height=778)
     else:
-        scatter = px.scatter_3d(df, x=scatter_axes[0], y=scatter_axes[1], z=scatter_axes[2], color='species',\
+        scatter = px.scatter_3d(df, x=scatter_axes[0], y=scatter_axes[1], z=scatter_axes[2], color='species' if labels is None else [species[i] for i in labels],\
              size=[2 for _ in range(len(df))], size_max=20, height=776, color_discrete_map={'Adelie': '#2077B4', 'Chinstrap':'#FB8139', 'Gentoo': '#49A02D'})
     
-    hist = px.histogram(df, x=hist_feat, template='simple_white', color='species', barmode="overlay", nbins=25, height=400)
-    count = px.histogram(df, x=['species', count_feat], template='simple_white', color='species', barmode='group', height=400)
-    violin = px.violin(df, y=violin_feat, x="species", color='species', box=True, template='simple_white', facet_col='sex', height=400)
-    
-    update_fig_layout([scatter, hist, count, violin])
-    return scatter, hist, count, violin
+    if not scatter_only:
+        hist = px.histogram(df, x=hist_feat, template='simple_white', color='species', barmode="overlay", nbins=25, height=400)
+        count = px.histogram(df, x=['species', count_feat], template='simple_white', color='species', barmode='group', height=400)
+        violin = px.violin(df, y=violin_feat, x="species", color='species', box=True, template='simple_white', facet_col='sex', height=400)
+        update_fig_layout([scatter, hist, count, violin])
+    else:
+        update_fig_layout([scatter])
 
+    return scatter if scatter_only else (scatter, hist, count, violin)
+
+
+def over_sampling(X_train,y_train):
+    oversampling = SMOTE()
+    X_train, y_train = oversampling.fit_resample(X_train, y_train)
+    return X_train,y_train
+
+def under_sampling(X_train,y_train):
+    undersample = RandomUnderSampler()
+    X_train, y_train = undersample.fit_resample(X_train, y_train)
+    return X_train,y_train
 
 def prepare_data(norm, imb):
-    pass
+    train_path, valid_path = datasets[norm]
+    train = pd.read_csv(DATA_PATH + train_path)
+    valid = pd.read_csv(DATA_PATH + valid_path)
+
+    X_train = train.drop(columns=['species'])
+    y_train = train['species']
+    X_valid = valid.drop(columns=['species'])
+    y_valid = valid['species']
+
+    if imb == 'over':
+        X_train, y_train = over_sampling(X_train, y_train)
+    elif imb == 'under':
+        X_train, y_train = under_sampling(X_train, y_train)
+    
+    return X_train, y_train, X_valid, y_valid
 
 
-def generate_model(type, p1, p2):
+def generate_model(type, p1, p2, norm, imb):
+    X_train, y_train, X_valid, y_valid = prepare_data(norm, imb)
+
     if type=='logistic':
-        pass
+        model = LogisticRegression(C=c_values[p1], max_iter=iter_values[p2]).fit(X_train, y_train)
     else:
-        pass
+        model = KNeighborsClassifier(n_neighbors=k_values[p1], weights=weight_values[p2]).fit(X_train, y_train)
+    
+    return model, X_valid, y_valid
+
+
 
 
     
@@ -101,13 +147,13 @@ app.layout = html.Div([
                         html.H5('F1 Score'),
                         dbc.Row([
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='f-1', className='bans Adelie')
+                                dbc.CardBody('00.0%', id='f-1', className='bans Adelie')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='f-2', className='bans Chinstrap')
+                                dbc.CardBody('00.0%', id='f-2', className='bans Chinstrap')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='f-3', className='bans Gentoo')
+                                dbc.CardBody('00.0%', id='f-3', className='bans Gentoo')
                             ], width=3),
                         ], className='justify-content-evenly'),
                     ], width=4),
@@ -116,13 +162,13 @@ app.layout = html.Div([
                         html.H5('Recall'),
                         dbc.Row([
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='r-1', className='bans Adelie')
+                                dbc.CardBody('00.0%', id='r-1', className='bans Adelie')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='r-2', className='bans Chinstrap')
+                                dbc.CardBody('00.0%', id='r-2', className='bans Chinstrap')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='r-3', className='bans Gentoo')
+                                dbc.CardBody('00.0%', id='r-3', className='bans Gentoo')
                             ], width=3),
                         ], className='justify-content-evenly'),
                     ], width=4),
@@ -131,13 +177,13 @@ app.layout = html.Div([
                         html.H5('Precision'),
                         dbc.Row([
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='p-1', className='bans Adelie')
+                                dbc.CardBody('00.0%', id='p-1', className='bans Adelie')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='p-2', className='bans Chinstrap')
+                                dbc.CardBody('00.0%', id='p-2', className='bans Chinstrap')
                             ], width=3),
                             dbc.Col([
-                                dbc.CardBody('95.7%', id='p-3', className='bans Gentoo')
+                                dbc.CardBody('00.0%', id='p-3', className='bans Gentoo')
                             ], width=3),
                         ], className='justify-content-evenly'),
                     ], width=4),
@@ -212,7 +258,7 @@ app.layout = html.Div([
                         dbc.Label('Data Normalization', html_for='normalize'),
                         dcc.Dropdown(options={'none':'None', 'minmax':'Min Max Scaling', 'std':'Standardization', 'robust':'Robust Scaling'}, value='none', id='normalize'),
                         dbc.Label('Dataset Imbalance', html_for='imbalance'),
-                        dcc.Dropdown(options={'none':'None', 'over':'SMOTE Oversampling', 'under':'Undersampling'}, value='none', id='imbalance'),
+                        dcc.Dropdown(options={'none':'None', 'over':'SMOTE Oversampling', 'under':'Random Undersampling'}, value='none', id='imbalance'),
                         html.Div([
                             dbc.Button('Apply Parameters', id='apply', class_name='me-1')
                         ], className='d-grid gap-2 col-6 mx-auto')
@@ -267,11 +313,11 @@ def toggle_filter(n1, n2, n3, is_open):
 def change_param(model_type):
     if model_type == 'logistic':
         lbl_1, lbl_2 = 'C Parameter', 'Maximum Iterations'
-        param_1 = dcc.Slider(id='param-2', min=0, max=len(c_values)-1, marks={i: str(v) for i, v in enumerate(c_values)}, step=None)
+        param_1 = dcc.Slider(id='param-1', min=0, max=len(c_values)-1, marks={i: str(v) for i, v in enumerate(c_values)}, step=None)
         param_2 = dcc.Slider(id='param-2', min=0, max=len(iter_values)-1, marks={i: str(v) for i, v in enumerate(iter_values)}, step=None)
     else:
         lbl_1, lbl_2 = 'No. of Neighbors', 'Weight Function'
-        param_1 = dcc.Slider(id='param-2', min=0, max=len(k_values)-1, marks={i: str(v) for i, v in enumerate(k_values)}, step=None)
+        param_1 = dcc.Slider(id='param-1', min=0, max=len(k_values)-1, marks={i: str(v) for i, v in enumerate(k_values)}, step=None)
         param_2 = dcc.Dropdown(options={v: v.title() for v in weight_values}, value=weight_values[0], id='weight_func')
     
     return lbl_1, lbl_2, param_1, param_2
@@ -302,16 +348,16 @@ def check_scatter_axes(type, axes):
     State('hist-feat', 'value'),
     State('count-feat', 'value'),
     State('violin-feat', 'value'),
-    Input('apply-fig', 'n_clicks')
+    Input('apply-fig', 'n_clicks'),
+    Input('apply', 'n_clicks')
 )
-def update_figs(type, scatter_axes, hist_feat, count_feat, violin_feat, n):
-    return generate_figures(type, scatter_axes, hist_feat, count_feat, violin_feat)
+def update_figs(type, scatter_axes, hist_feat, count_feat, violin_feat, n1, n2):
+    return generate_figures(type, scatter_axes, hist_feat, count_feat, violin_feat, labels=labels)
 
 
 # *********** Plots Configs *********** #
 
 @app.callback(
-    Output('scatter-fig', 'figure'),
     Output('f-1', 'children'),
     Output('f-2', 'children'),
     Output('f-3', 'children'),
@@ -321,8 +367,6 @@ def update_figs(type, scatter_axes, hist_feat, count_feat, violin_feat, n):
     Output('p-1', 'children'),
     Output('p-2', 'children'),
     Output('p-3', 'children'),
-    State('scatter-type', 'value'),
-    State('scatter-axes', 'value'),
     State('model-type', 'value'),
     State('param-1', 'value'),
     State('param-2', 'value'),
@@ -330,8 +374,18 @@ def update_figs(type, scatter_axes, hist_feat, count_feat, violin_feat, n):
     State('imbalance', 'value'),
     Input('apply', 'n_clicks')
 )
-def create_model(dim, axes, model, p1, p2, norm, imb, n):
-    pass
+def update_model(classifier, p1, p2, norm, imb, n):
+    if n:
+        global labels
+        model, X_valid, y_valid = generate_model(classifier, p1, p2, norm, imb)
+        labels = model.predict(X_valid)
+        metrics = precision_recall_fscore_support(y_valid, labels)
+        p_list = [f"{p_:.1f}%".rstrip('0').rstrip('.') for p_ in metrics[0]*100]
+        r_list = [f"{r_:.1f}%".rstrip('0').rstrip('.') for r_ in metrics[0]*100]
+        f_list = [f"{f_:.1f}%".rstrip('0').rstrip('.') for f_ in metrics[0]*100]
+
+        return p_list[0], p_list[1], p_list[2], r_list[0], r_list[1], r_list[2], f_list[0], f_list[1], f_list[2]
+
 
 ##### ##### ##### ##### ##### ##### App Runner ##### ##### ##### ##### ##### #####
 
