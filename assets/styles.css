@@ -43,7 +43,7 @@ h5 {
 }
 
 .overlay {
-    margin-top: 0.5vw;
+    margin-top: 0.4vw;
     background-color: rgba(240, 255, 255, 0.4);
     border-radius: 25px;
     box-shadow: 2px 2.8px rgb(83, 83, 83);
@@ -79,4 +79,37 @@ h6 {
 .offcanvas-title {
     text-shadow: 0px 1.2px rgb(83, 83, 83);
     margin-bottom: -10px;
+}
+
+#apply, #apply-fig {
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.Select-control {
+    border-radius: 10px;
+}
+
+footer { /* Plotly Footer */
+    display: none;
+}
+
+#footer {
+    height: 24px;
+    text-align: center;
+    background-color: #0C3E66;
+    color: aliceblue;
+    width:100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 8px;
+}
+
+#footer a, #footer a:visited {
+    text-decoration: none;
+    color:rgba(102, 193, 243, 0.778);
+}
+
+#footer a:hover {
+    color: rgba(160, 253, 205, 0.899);
 }
