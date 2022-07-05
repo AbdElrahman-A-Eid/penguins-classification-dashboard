@@ -7,6 +7,7 @@ dash-html-components==2.0.0
 dash-table==5.0.0
 Flask==2.1.2
 Flask-Compress==1.12
+gunicorn==20.1.0
 imbalanced-learn==0.9.1
 importlib-metadata==4.12.0
 itsdangerous==2.1.2
