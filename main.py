@@ -20,7 +20,8 @@ from sklearn.metrics import precision_recall_fscore_support
 
 ##### ##### ##### ##### ##### ##### Variables  ##### ##### ##### ##### ##### #####
 
-DATA_PATH = '/'.join(re.split('[\\|/]', __file__)[:-1]) + '/assets/data/'
+# DATA_PATH = '/'.join(re.split('[\\|/]', __file__)[:-1]) + '/assets/data/'
+DATA_PATH = './assets/data/'
 
 df = pd.read_csv(DATA_PATH + 'penguins_cleaned.csv')
 
@@ -44,7 +45,7 @@ datasets = {v: get_file_names(v) for v in ['none', 'minmax', 'std', 'robust']}
 
 ##### ##### ##### ##### ##### ##### App Instantiation  ##### ##### ##### ##### ##### #####
 
-app = Dash(
+app = Dash(__name__,
     external_stylesheets=[
         dbc.themes.BOOTSTRAP,
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
