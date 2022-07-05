@@ -50,6 +50,9 @@ DashboardProject
 └── README.md
 ```
 
+## Deployed Version
+Check the Live Dashboard on <a href='https://penguins-dash.herokuapp.com/' target='_blank'>Heroku</a>
+
 ## Team Members
 
 - [AbdElrahman Eid](https://github.com/AbdElrahman-A-Eid)
