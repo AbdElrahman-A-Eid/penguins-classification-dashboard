@@ -2,7 +2,6 @@
 
 ##### ##### ##### ##### ##### ##### Imports  ##### ##### ##### ##### ##### #####
 
-from tkinter import FALSE
 from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 import plotly.express as px
@@ -20,8 +19,7 @@ from sklearn.metrics import precision_recall_fscore_support
 
 ##### ##### ##### ##### ##### ##### Variables  ##### ##### ##### ##### ##### #####
 
-# DATA_PATH = '/'.join(re.split('[\\|/]', __file__)[:-1]) + '/assets/data/'
-DATA_PATH = './assets/data/'
+DATA_PATH = '/'.join(re.split('/', __file__)[:-1]) + '/assets/data/'
 
 df = pd.read_csv(DATA_PATH + 'penguins_cleaned.csv')
 
@@ -46,6 +44,7 @@ datasets = {v: get_file_names(v) for v in ['none', 'minmax', 'std', 'robust']}
 ##### ##### ##### ##### ##### ##### App Instantiation  ##### ##### ##### ##### ##### #####
 
 app = Dash(__name__,
+    title='Penguins Dashboard',
     external_stylesheets=[
         dbc.themes.BOOTSTRAP,
         "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -438,4 +437,4 @@ def update_model(classifier, p1, p2, norm, imb, n):
 ##### ##### ##### ##### ##### ##### App Runner ##### ##### ##### ##### ##### #####
 
 if __name__ == "__main__":
-    app.run_server(debug=False)
+    app.run_server(debug=True)

@@ -1,4 +1,8 @@
-venv
+dashboard/
+include/
+bin/
+lib/
+lib64/
 *.pyc
 .DS_Store
-.env
+.env*.cfg
