@@ -250,82 +250,82 @@ app.layout = html.Div([
                         ]),
                     ], width=6)
                 ], className='overlay figs'),
-
-
-            # *********** Filters Offcanvas *********** #
-
-            dbc.Button([
-                html.I(className='fas fa-filter fa-lg fa-beat')
-            ], id='open-filters', class_name='btn-floating btn-lg float'),
-
-            dbc.Offcanvas([
-                dbc.Row([
-                        html.H6('Graphs Configurations and Filters'),
-                        dbc.Form([
-                            dbc.Label('Scatter Type', html_for='scatter-type'),
-                            dcc.RadioItems(options={'2': '2D', '3': '3D'}, value='2', inline=True,
-                                        id='scatter-type', inputStyle={'margin-right': '10px', 'margin-left': '25px'}),
-                            dbc.Label('Scatter Axes', html_for='scatter-axes'),
-                            dcc.Dropdown(options=column_options, multi=True,
-                                        id='scatter-axes', value=list(column_options.keys())[:2]),
-                            dbc.Input(id='feedback', style={'display': 'none'}),
-                            dbc.FormFeedback(
-                                ['You must select the proper number of features!'], type='invalid'),
-                            dbc.Label('Histogram Feature', html_for='hist-feat'),
-                            dcc.Dropdown(options=column_options, id='hist-feat',
-                                        value=list(column_options.keys())[0]),
-                            dbc.Label('Count Plot Feature', html_for='count-feat'),
-                            dcc.Dropdown(options=cat_cols, id='count-feat',
-                                        value=list(cat_cols.keys())[0]),
-                            dbc.Label('Violin Plot Feature',
-                                    html_for='violin-feat'),
-                            dcc.Dropdown(options=column_options, id='violin-feat',
-                                        value=list(column_options.keys())[0]),
-                            html.Div([
-                                dbc.Button('Update Figures',
-                                        id='apply-fig', class_name='me-1')
-                            ], className='d-grid gap-2 col-6 mx-auto')
-                        ])
-                        ]),
-                html.Hr(),
-                dbc.Row([
-                        html.H6('Model Parameters'),
-                        dbc.Form([
-                            dbc.Label('Model Type', html_for='model-type'),
-                            dcc.RadioItems(options={'logistic': 'Logistic Regression', 'knn': 'KNearest Neighbors'}, value='logistic',
-                                        inline=True, id='model-type', inputStyle={'margin-right': '7px', 'margin-left': '10px'}),
-                            dbc.Label('Parameter #1', id='param-1-lbl',
-                                    html_for='param-1'),
-                            html.Div([
-                                dcc.Slider(id='param-1', min=0, max=len(c_values)-1, marks={
-                                        i: str(v) for i, v in enumerate(c_values)}, step=None, value=0)
-                            ], id='param-1-container'),
-                            dbc.Label('Parameter #2', id='param-2-lbl',
-                                    html_for='param-2'),
-                            html.Div([
-                                dcc.Slider(id='param-2', min=0, max=len(iter_values)-1, marks={
-                                        i: str(v) for i, v in enumerate(iter_values)}, step=None, value=0)
-                            ], id='param-2-container'),
-                            dbc.Label('Data Normalization', html_for='normalize'),
-                            dcc.Dropdown(options={'none': 'None', 'minmax': 'Min Max Scaling',
-                                        'std': 'Standardization', 'robust': 'Robust Scaling'}, value='none', id='normalize'),
-                            dbc.Label('Dataset Imbalance', html_for='imbalance'),
-                            dcc.Dropdown(options={'none': 'None', 'over': 'SMOTE Oversampling',
-                                        'under': 'Random Undersampling'}, value='none', id='imbalance'),
-                            html.Div([
-                                dbc.Button('Apply Parameters',
-                                        id='apply', class_name='me-1')
-                            ], className='d-grid gap-2 col-6 mx-auto')
-                        ])
-                        ])
-            ],
-                id='filters-canvas',
-                title='Dashboard Settings',
-                placement='start',
-                is_open=False),
         ]),
 
+        # *********** Filters Offcanvas *********** #
+
+        dbc.Button([
+            html.I(className='fas fa-filter fa-lg fa-beat')
+        ], id='open-filters', class_name='btn-floating btn-lg float'),
+
+        dbc.Offcanvas([
+            dbc.Row([
+                    html.H6('Graphs Configurations and Filters'),
+                    dbc.Form([
+                        dbc.Label('Scatter Type', html_for='scatter-type'),
+                        dcc.RadioItems(options={'2': '2D', '3': '3D'}, value='2', inline=True,
+                                    id='scatter-type', inputStyle={'margin-right': '10px', 'margin-left': '25px'}),
+                        dbc.Label('Scatter Axes', html_for='scatter-axes'),
+                        dcc.Dropdown(options=column_options, multi=True,
+                                    id='scatter-axes', value=list(column_options.keys())[:2]),
+                        dbc.Input(id='feedback', style={'display': 'none'}),
+                        dbc.FormFeedback(
+                            ['You must select the proper number of features!'], type='invalid'),
+                        dbc.Label('Histogram Feature', html_for='hist-feat'),
+                        dcc.Dropdown(options=column_options, id='hist-feat',
+                                    value=list(column_options.keys())[0]),
+                        dbc.Label('Count Plot Feature', html_for='count-feat'),
+                        dcc.Dropdown(options=cat_cols, id='count-feat',
+                                    value=list(cat_cols.keys())[0]),
+                        dbc.Label('Violin Plot Feature',
+                                html_for='violin-feat'),
+                        dcc.Dropdown(options=column_options, id='violin-feat',
+                                    value=list(column_options.keys())[0]),
+                        html.Div([
+                            dbc.Button('Update Figures',
+                                    id='apply-fig', class_name='me-1')
+                        ], className='d-grid gap-2 col-6 mx-auto')
+                    ])
+                    ]),
+            html.Hr(),
+            dbc.Row([
+                    html.H6('Model Parameters'),
+                    dbc.Form([
+                        dbc.Label('Model Type', html_for='model-type'),
+                        dcc.RadioItems(options={'logistic': 'Logistic Regression', 'knn': 'KNearest Neighbors'}, value='logistic',
+                                    inline=True, id='model-type', inputStyle={'margin-right': '7px', 'margin-left': '10px'}),
+                        dbc.Label('Parameter #1', id='param-1-lbl',
+                                html_for='param-1'),
+                        html.Div([
+                            dcc.Slider(id='param-1', min=0, max=len(c_values)-1, marks={
+                                    i: str(v) for i, v in enumerate(c_values)}, step=None, value=0)
+                        ], id='param-1-container'),
+                        dbc.Label('Parameter #2', id='param-2-lbl',
+                                html_for='param-2'),
+                        html.Div([
+                            dcc.Slider(id='param-2', min=0, max=len(iter_values)-1, marks={
+                                    i: str(v) for i, v in enumerate(iter_values)}, step=None, value=0)
+                        ], id='param-2-container'),
+                        dbc.Label('Data Normalization', html_for='normalize'),
+                        dcc.Dropdown(options={'none': 'None', 'minmax': 'Min Max Scaling',
+                                    'std': 'Standardization', 'robust': 'Robust Scaling'}, value='none', id='normalize'),
+                        dbc.Label('Dataset Imbalance', html_for='imbalance'),
+                        dcc.Dropdown(options={'none': 'None', 'over': 'SMOTE Oversampling',
+                                    'under': 'Random Undersampling'}, value='none', id='imbalance'),
+                        html.Div([
+                            dbc.Button('Apply Parameters',
+                                    id='apply', class_name='me-1')
+                        ], className='d-grid gap-2 col-6 mx-auto')
+                    ])
+                    ])
+        ],
+            id='filters-canvas',
+            title='Dashboard Settings',
+            placement='start',
+            is_open=False),
+
     ], className='container-fluid'),
+
 
     # *********** Footer *********** #
 
