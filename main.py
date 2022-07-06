@@ -26,7 +26,6 @@ df = pd.read_csv(DATA_PATH + 'penguins_cleaned.csv')
 columns_dict = {'species': 'Species', 'culmen_length_mm': 'Culmen Length (mm)', 'culmen_depth_mm': 'Culmen Depth (mm)',
                 'flipper_length_mm': 'Flipper Length (mm)', 'body_mass_g': 'Body Mass (g)', 'sex': 'Sex', 'island': 'Island'}
 rename_dict = columns_dict.copy()
-rename_dict.update({'value': 'Categoty', 'count': 'Count'})
 
 column_options = {k: v for k, v in columns_dict.items() if k not in [
     'species', 'sex', 'island']}
@@ -66,7 +65,8 @@ def update_fig_layout(fig_list):
             'paper_bgcolor': no_color,
             'legend_bgcolor': no_color,
             'showlegend': legend_bool,
-            'margin': margin_dict
+            'margin': margin_dict,
+            # 'title': {'font_color':'#0C3E66', 'xanchor': 'center', 'yanchor': 'top'}
         })
         fig.update_xaxes(title_font_family='Calibri', title_font_color='#0C3E66', title_font_size=20)
         fig.update_yaxes(title_font_family='Calibri', title_font_color='#0C3E66', title_font_size=20)
@@ -90,6 +90,7 @@ def generate_figures(type='2', scatter_axes=list(column_options.keys())[:2], his
 
     hist = px.histogram(df, x=hist_feat, template='simple_white', color='species',
                         barmode="overlay", nbins=25, height=388, labels=rename_dict)
+    rename_dict.update({'value': rename_dict[count_feat]})
     count = px.histogram(df, x=['species', count_feat], template='simple_white',
                          color='species', barmode='group', height=388, labels=rename_dict)
     violin = px.violin(df, y=violin_feat, x="species", color='species', box=True,
@@ -152,6 +153,17 @@ scatter_fig, hist_fig, count_fig, violin_fig = generate_figures()
 app.layout = html.Div([
 
     html.Div([
+
+        # *********** Background Image *********** #
+
+        html.Img(src=app.get_asset_url('imgs/penguins.png'), id='background'),
+
+        # *********** Title *********** #
+
+        # dbc.Row([
+        #     html.H3('Penguins Classification Dashboard', id='title'),
+        # ]),
+
         # *********** BANs *********** #
 
         dbc.Row([

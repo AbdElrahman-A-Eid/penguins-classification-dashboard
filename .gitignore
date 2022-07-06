@@ -2,7 +2,8 @@ dashboard/
 include/
 bin/
 lib/
-lib64/
+lib64*
+lib64/*
 *.pyc
 .DS_Store
 .env*.cfg
