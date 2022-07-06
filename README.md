@@ -2,6 +2,8 @@
 
 Dashboard Featuring Data Vizualization and Classifier Model Predictions. Implemented using Plotly Dash. A Project for Data Visualization Course during ITI AI-Pro.
 
+<div align="center"><img src="assets/imgs/penguins.png" style="height:400px;" alt="Palmer Penguins Image" /></div>
+
 ## Dataset
 
 - Palmer Archipelago (Antarctica) Penguins, [Kaggle](https://www.kaggle.com/datasets/parulpandey/palmer-archipelago-antarctica-penguin-data)
@@ -51,7 +53,7 @@ DashboardProject
 ```
 
 ## Deployed Version
-Check the Live Dashboard on <a href='https://penguins-dash.herokuapp.com/' target='_blank'>Heroku</a>
+Check the Live Dashboard on <a href='https://penguins-dash.herokuapp.com/' target="_blank">Heroku</a>
 
 ## Team Members
 
