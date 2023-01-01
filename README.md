@@ -45,15 +45,12 @@ DashboardProject
 │   ├── imgs
 │   │   └── penguins.png
 │   └── styles.css
-├── Data Engineering.ipynb
 ├── main.py
-├── Models.ipynb
-├── Plots Exploration.ipynb
 └── README.md
 ```
 
 ## Deployed Version
-Check the Live Dashboard on <a href='https://penguins-dash.herokuapp.com/' target="_blank">Heroku</a>
+Check the Live Dashboard on <a href='https://penguins-dash.onrender.com/' target="_blank">Render</a>
 
 ## Team Members
 
